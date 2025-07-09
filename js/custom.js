@@ -2,11 +2,12 @@
 function getYear() {
     var currentDate = new Date();
     var currentYear = currentDate.getFullYear();
-    document.querySelector("#displayYear").innerHTML = currentYear;
+    var displayYearEl = document.querySelector("#displayYear");
+    if (displayYearEl) {
+        displayYearEl.innerHTML = currentYear;
+    }
 }
-
 getYear();
-
 
 // isotope js
 $(window).on('load', function () {
@@ -32,7 +33,7 @@ $(window).on('load', function () {
 // nice select
 $(document).ready(function() {
     $('select').niceSelect();
-  });
+});
 
 /** google_map js **/
 function myMap() {
@@ -49,7 +50,6 @@ $(".client_owl-carousel").owlCarousel({
     margin: 0,
     dots: false,
     nav: true,
-    navText: [],
     autoplay: true,
     autoplayHoverPause: true,
     navText: [
@@ -66,5 +66,38 @@ $(".client_owl-carousel").owlCarousel({
         1000: {
             items: 2
         }
+    }
+});
+
+// Booking form handler
+document.addEventListener('DOMContentLoaded', function () {
+    const bookingForm = document.getElementById('bookingForm');
+
+    if (bookingForm) {
+        bookingForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevents the default form submission behavior
+
+            // Collect form data
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            const numberOfPersons = document.getElementById('numberOfPersons').value;
+            const bookingDate = document.getElementById('date').value;
+
+            // Simple validation
+            if (!customerName || !customerPhone || !customerEmail || !numberOfPersons || !bookingDate) {
+                alert('Por favor, preencha todos os campos para fazer a reserva.');
+                return;
+            }
+
+            // Display confirmation
+            alert(`Reserva confirmada!\n\nDetalhes:\nNome: ${customerName}\nTelefone: ${customerPhone}\nEmail: ${customerEmail}\nNúmero de Pessoas: ${numberOfPersons}\nData: ${bookingDate}`);
+
+            // Reset the form after successful submission
+            bookingForm.reset();
+
+            // nice-select needs to be updated after a reset
+            $('select').niceSelect('update');
+        });
     }
 });
